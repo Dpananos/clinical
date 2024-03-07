@@ -7,8 +7,8 @@ def simulate_data(n:int=100, p:int=10, random_seed:int=0) ->  Tuple[np.ndarray, 
     rng = np.random.RandomState(random_seed)
     X = rng.normal(size =(n, p)).round(2)
     beta = np.zeros(p)
-    beta[0] = 1
-    beta[0] = 2
+    beta[0] = 3
+    beta[1] = 3
     eta = -2 + X@beta
     p = 1/(1+np.exp(-eta))
     y = rng.binomial(1, p)
