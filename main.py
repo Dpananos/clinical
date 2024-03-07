@@ -40,9 +40,7 @@ def fit_model(short: bool = True) -> None:
     }
 
     brier_scorer = make_scorer(
-        brier_score_loss, 
-        greater_is_better=False,
-        needs_proba=True
+        brier_score_loss, greater_is_better=False, needs_proba=True
     )
 
     if short:
@@ -69,7 +67,6 @@ def fit_model(short: bool = True) -> None:
     print(f"Estimated Brier Loss: {scores.mean():.3f} ")
     print(f"True Brier Loss: {true_brier_loss:.3f} ")
 
-
     # So what is this nested cross validation actually estimating?
     # Let's find out. First, lets fit the model on the data
 
@@ -79,12 +76,11 @@ def fit_model(short: bool = True) -> None:
     # This is likely too low, as we will see
     print(f"Model's Best Score: {-model.best_score_:.3f}")
 
-
     # Now, let's compute the average brier score on new -- unseen -- data
     losses = []
     for i in range(1000):
         # Be sure to change the random seed at each loop
-        Xnew, ynew, *_ =  simulate_data(n=1000, p=10, random_seed=i)
+        Xnew, ynew, *_ = simulate_data(n=1000, p=10, random_seed=i)
 
         # Use the fitted model to predict on new data
         p_new = model.predict_proba(Xnew)
@@ -97,6 +93,7 @@ def fit_model(short: bool = True) -> None:
     # Closer to the nested cross validtion
     # This is why we need new data to validate models
     print(f"Average Brier Loss on Unseen Data: {np.mean(losses):.3f}")
+
 
 if __name__ == "__main__":
     fit_model(short=True)
