@@ -27,16 +27,16 @@ def fit_model(resample_minority: bool = True) -> None:
         metric="binary_logloss",
         n_estimators=1000,
         learning_rate=0.005,
-        verbose=-1
+        verbose=-1,
     )
 
     # Grid for cross validation
     param_grid = {
-        'max_depth': [2, 4, 6],
+        "max_depth": [2, 4, 6],
         "lambda": [0.1, 1, 2],
     }
 
-    model = GridSearchCV(clf, param_grid, cv=3, scoring="neg_log_loss",verbose=4)
+    model = GridSearchCV(clf, param_grid, cv=3, scoring="neg_log_loss", verbose=4)
 
     model.fit(X, y)
 
@@ -46,8 +46,8 @@ def fit_model(resample_minority: bool = True) -> None:
 
     return ytest, predicted_p[:, 1], auc
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     fig, axes = plt.subplots(nrows=1, ncols=2, dpi=120)
 
     for ax, rsmp in zip(axes, [True, False]):
@@ -56,15 +56,13 @@ if __name__ == "__main__":
         prange = np.linspace(min(predicted_p), max(predicted_p), 25)
         apparent_cal = lowess(ytest, predicted_p, it=0, xvals=prange)
 
-
-        #plot calibration curve
-        ax.scatter(predicted_p, ytest, s=1, alpha = 0.4, c='k')
-        ax.plot(prange, apparent_cal, 'red', label = 'Non-Parametric Estimate')
-        ax.plot([0, 1], [0, 1], 'k--', label = 'Perfect Calibration')
+        # plot calibration curve
+        ax.scatter(predicted_p, ytest, s=1, alpha=0.4, c="k")
+        ax.plot(prange, apparent_cal, "red", label="Non-Parametric Estimate")
+        ax.plot([0, 1], [0, 1], "k--", label="Perfect Calibration")
         ax.set_title(f"AUC: {auc:.2f}, Resampled with SMOTE: {str(rsmp)}")
         ax.set_xlabel("Predicted Probability")
         ax.set_ylabel("Observed Outcome")
-        ax.legend(loc = 'upper left')
-    
-    plt.show()
+        ax.legend(loc="upper left")
 
+    plt.show()
